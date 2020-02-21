@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os
+import os,re
 auth_file='/var/log/auth.log'
 
 def tail_line(authlogfile):
@@ -16,7 +16,9 @@ def attempt(auth_file):
     #print(authlogfile.read())
     lines=tail_line(authlogfile)
     for i in lines:
-        print(i)
+        #print(i)
+        if re.match('.*sshd.*?(Invalid\suser|Accepted).*',i) is not None:
+            print("attempt 1")
 
 
 
