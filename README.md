@@ -61,9 +61,3 @@ Please read [CONTRIBUTING.md](https://github.com/vikas-prabhakar/Assignment/blob
 
 * **Anup Dubey** - *work* - [github](https://github.com/anup1384)
 
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
