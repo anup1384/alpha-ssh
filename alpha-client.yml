@@ -1,5 +1,5 @@
 ---
-#ansible-playbook alpha-client.yml -e "target_host=tag_service_alpha_client" -v --vault-password-file ~/.ansible_vault
+#ansible-playbook alpha-client.yml -e "target_host=tag_service_alpha_client" -vv
 
 - hosts: "{{ target_host }}"
   roles:
