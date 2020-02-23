@@ -51,12 +51,6 @@ ssh username@client_ip
 
 To view ssh attempt report, hit the IP of the Server.
 
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://github.com/vikas-prabhakar/Assignment/blob/master/CONTRIBUTING.md) for details and the process for submitting pull requests to us.
-
-
 ## Authors
 
 * **Anup Dubey** - *work* - [github](https://github.com/anup1384)
