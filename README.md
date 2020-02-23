@@ -56,13 +56,10 @@ To view ssh attempt report, hit the IP of the Server.
 
 Please read [CONTRIBUTING.md](https://github.com/vikas-prabhakar/Assignment/blob/master/CONTRIBUTING.md) for details and the process for submitting pull requests to us.
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
 ## Authors
 
-* **Anup Dubey** - *work* - [github](https://github.com/vikas-prabhakar)
+* **Anup Dubey** - *work* - [github](https://github.com/anup1384)
 
 
 ## Acknowledgments
