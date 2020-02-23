@@ -10,3 +10,9 @@ mysql_root_password_vault: !vault |
 custom_dir: alpha-server
 mysql_db: "ssh_attempts"
 mysql_table: "report"
+
+### APP Health check ###
+APP_HEALTH_URI: 'http://localhost:8090'
+APP_HEALTH_CHECKUP: 1
+APP_ETA: 5
+APP_RETRIES: 10

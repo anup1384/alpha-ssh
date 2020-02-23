@@ -91,13 +91,13 @@
     - nginx
  
 
-# - name: "wait for App to come up"
-#   uri:
-#     url: "{{ APP_HEALTH_URI }}"
-#     return_content: yes
-#   register: result
-#   until: result is succeeded
-#   retries: "{{ APP_RETRIES }}"
-#   delay:  "{{ APP_ETA }}"
-#   when: APP_HEALTH_CHECKUP is defined and APP_HEALTH_CHECKUP
-#   tags: [health]
+- name: "wait for App to come up"
+  uri:
+    url: "{{ APP_HEALTH_URI }}"
+    return_content: yes
+  register: result
+  until: result is succeeded
+  retries: "{{ APP_RETRIES }}"
+  delay:  "{{ APP_ETA }}"
+  when: APP_HEALTH_CHECKUP is defined 
+  tags: [health]
