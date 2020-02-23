@@ -1,0 +1,11 @@
+---
+# defaults file for mysql-server
+mysql_root_password: Gojek@#!012
+
+mysql_pkgs:
+    - python-selinux
+    - mysql-server
+    - python-mysqldb
+
+mysql_db: test
+

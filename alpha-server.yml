@@ -1,0 +1,7 @@
+---
+#ansible-playbook alpha-server.yml -e "target_host=tag_service_alpha_server" -v --vault-password-file ~/.ansible_vault
+
+- hosts: "{{ target_host }}"
+  roles:
+    - {role: alpha-server, tags: ['alpha-server']}
+  become: true

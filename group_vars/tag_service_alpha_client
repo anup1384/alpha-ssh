@@ -1,0 +1,3 @@
+alphaserver: "tag_service_alpha_server"
+alphaserver_port: 8080
+custom_dir: "alpha-client"

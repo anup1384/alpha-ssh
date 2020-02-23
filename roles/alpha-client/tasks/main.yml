@@ -1,0 +1,65 @@
+---
+# tasks file for alpha-server
+
+- name: setup group
+  group: name=alpha system=yes
+
+- name: Setup user
+  user: name=alpha system=yes group=alpha
+
+- name: alpha-client | create app and log directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: alpha
+    group: alpha
+    mode: 0755
+  with_items:
+    - /var/www/{{ custom_dir }}
+    - /var/log/{{ custom_dir }}
+
+# - name: Updating apt cache 
+#   apt: 
+#     upgrade: no
+#     update_cache: yes
+#     cache_valid_time: 36000
+
+- name: Install server dependencies
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  with_items: "{{ server_dependencies }}"
+
+- name: Install pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+    executable: pip3
+  with_items: "{{ mysql_pip_packages }}"
+
+- name: copying alpha-client script to server
+  template:
+    src: alphaclient.py
+    dest: /var/www/{{ custom_dir }}/
+    mode: 0755
+    owner: alpha
+    group: alpha
+  tags:
+    - alpha-client
+
+- name: alpha-client | add systemd script
+  template:
+    src: alphaclient.service
+    dest: /etc/systemd/system/
+    mode: 0755
+  tags: alpha-client
+
+- name: alpha-client | restart alpha-client service
+  systemd:
+    name: alphaclient
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+

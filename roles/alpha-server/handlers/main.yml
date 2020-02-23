@@ -1,0 +1,6 @@
+---
+# handlers file for alpha-server
+- name: reload nginx
+  service:
+    name: nginx
+    state: reloaded

@@ -1,0 +1,7 @@
+---
+#ansible-playbook mysql-server.yml -e "target_host=tag_service_alpha_mysql_server" -v --vault-password-file ~/.ansible_vault
+
+- hosts: "{{ target_host }}"
+  roles:
+    - {role: mysql-server, tags: ['mysql']}
+  become: true

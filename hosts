@@ -1,0 +1,6 @@
+[tag_service_alpha_server]
+52.197.40.81 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/Downloads/alpha.pem
+[tag_service_alpha_client]
+52.199.185.226 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/Downloads/alpha.pem
+54.199.247.27 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/Downloads/alpha.pem
+

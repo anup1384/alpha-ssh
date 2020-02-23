@@ -1,9 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+from flask import Flask
 import mysql.connector
 import sys
 import alphaserver
+from flask import render_template
 
-def main():
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello():
     db_name = 'ssh_attempts'
     db_table = 'report'
     print ("Connecting to mysql")
@@ -12,11 +18,7 @@ def main():
     print ("Getting data from database")
     query = 'SELECT * FROM %s.%s' %(db_name,db_table)
     response = alphaserver.db_execute(connection,query,True)
-    print (" --------------------------------")
-    print ("| Metrics for ssh log-in attempts|")
-    print ("|--------------------------------|")
-    for row in response:
-        print ("| * %s had %d attempt" %(row[1],row[2]))
+    return render_template('result.html', response=response)
 
-    print (" --------------------------------")
-main()
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port='8090', debug=True)

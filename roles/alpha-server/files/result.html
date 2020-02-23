@@ -1,0 +1,15 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<h1> Alpha Server Report </h1>
+		<h3> Metrics for ssh login attempts </h3>
+		<ol>
+			{%for row in response%}
+
+			<li>node :{{row[1]}} had {{row[2]}} attempts</li>
+
+			{%endfor%}
+		</ol>
+	</body>
+</html>

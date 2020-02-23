@@ -1,0 +1,103 @@
+---
+# tasks file for alpha-server
+
+- name: setup group
+  group: name=alpha system=yes
+
+- name: Setup user
+  user: name=alpha system=yes group=alpha
+
+- name: alpha-server | create app and log directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: alpha
+    group: alpha
+    mode: 0755
+  with_items:
+    - /var/www/{{ custom_dir }}
+    - /var/log/{{ custom_dir }}
+    - /var/www/{{ custom_dir }}/templates
+  tags:
+    - alpha-server1
+
+- name: Updating apt cache 
+  apt: 
+    upgrade: no
+    update_cache: yes
+    cache_valid_time: 36000
+
+- name: Install server dependencies
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  with_items: "{{ server_dependencies }}"
+
+- name: Install pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+    executable: pip3
+  with_items: "{{ mysql_pip_packages }}"
+
+- name: copying alpha-server and alpha-report script to server
+  template:
+    src: "{{ item }}"
+    dest: /var/www/{{ custom_dir }}/
+    mode: 0755
+    owner: alpha
+    group: alpha
+  with_items:
+    - "alphaserver.py"
+    - "app.py"
+  tags:
+    - alpha-server
+
+- name: copying  file to server
+  copy:
+    src: "{{ item }}"
+    dest: /var/www/{{ custom_dir }}/templates/
+    mode: 0755
+    owner: alpha
+    group: alpha
+  with_items:
+    - "result.html"
+  tags:
+    - alpha-server
+
+- name: alpha-server | add systemd script
+  template:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/
+    mode: 0755
+  with_items:
+    - "alphaserver.service"
+    - "app.service"
+  tags: alpha-server
+
+- name: alpha-server | restart alpha-server service
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  with_items:
+    - "alphaserver"
+    - "app"
+
+- include: nginx.yml
+  tags:
+    - nginx
+ 
+
+# - name: "wait for App to come up"
+#   uri:
+#     url: "{{ APP_HEALTH_URI }}"
+#     return_content: yes
+#   register: result
+#   until: result is succeeded
+#   retries: "{{ APP_RETRIES }}"
+#   delay:  "{{ APP_ETA }}"
+#   when: APP_HEALTH_CHECKUP is defined and APP_HEALTH_CHECKUP
+#   tags: [health]

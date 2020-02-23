@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 import socket,mysql.connector,select,sys
 import sys
-db_name = 'ssh_attempts'
-db_table = 'report'
+db_name = '{{ mysql_db }}'
+db_table = '{{ mysql_table }}'
 
 def mydb():
     connection=mysql.connector.connect(
                                     host="127.0.0.1",
                                     user="root",
-                                    passwd="mysql@123")
+                                    passwd="{{ mysql_root_password }}")
     return connection
 
 def db_execute(connection,query,select=False):

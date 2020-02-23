@@ -1,0 +1,30 @@
+---
+# tasks file for mysql-server
+- name: Check if MySQL is already installed.
+  stat: path=/etc/init.d/mysql
+  register: mysql_installed
+
+- name: Install the mysql packages in Debian derivatives
+  apt: name={{ item }} state=installed update_cache=yes
+  with_items:
+    - "{{ mysql_pkgs }}"
+  when: not mysql_installed.stat.exists
+
+- name: Start the MySQL service
+  service: 
+    name: mysql 
+    state: restarted
+    enabled: true
+
+- name: update mysql root password for all root accounts
+  mysql_user: name=root host={{ item }} password={{ mysql_root_password }} 
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+  ignore_errors: yes
+  tags: mysqldb
+
+- name: Create the database
+  mysql_db: name="{{ mysql_db }}" state=present login_user=root login_password={{ mysql_root_password }}
+  tags: mysqldb

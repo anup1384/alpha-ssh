@@ -12,9 +12,9 @@ def tail_line(authlogfile):
 
 
 def report(attempt_count):
-    server = "52.197.40.81"
-    port = 8080
-
+    server = "{% for host in groups [alphaserver] %}{{host}}{% if not loop.last %}, {% endif %}{% endfor %}"
+    port = {{ alphaserver_port  }}
+    
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((server, port))

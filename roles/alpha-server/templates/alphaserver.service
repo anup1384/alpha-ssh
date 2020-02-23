@@ -1,0 +1,26 @@
+[Unit]
+	Description=alphaserver service
+	After=syslog.target
+
+[Service]
+	User=alpha
+	ExecStart=/bin/bash -c "/usr/bin/python3 -u /var/www/{{ custom_dir }}/alphaserver.py >> /var/log/{{ custom_dir }}/alphaserver.log 2>&1"
+	SuccessExitStatus=143
+        LimitMEMLOCK=infinity
+        LimitCPU=infinity
+
+        # Specifies the maximum file descriptor number that can be opened by this process
+        LimitNOFILE=65536
+
+        # Specifies the maximum number of processes
+        LimitNPROC=65536
+
+        # Specifies the maximum size of virtual memory
+        LimitAS=infinity
+
+        # Specifies the maximum file size
+        LimitFSIZE=infinity
+
+[Install]
+	WantedBy=multi-user.target
+

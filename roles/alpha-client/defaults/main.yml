@@ -1,0 +1,9 @@
+---
+# defaults file for alpha-server
+server_dependencies:
+  - python-pip
+  - python3-pip
+
+mysql_pip_packages:
+  - mysql-connector
+
