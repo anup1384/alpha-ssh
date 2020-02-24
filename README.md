@@ -1,55 +1,68 @@
-# SSH Attempt Report
+# SSH Attempt Report Application 
 
-It contain ansible roles to setup simple web application that show the ssh attempt on the client machines.
-## Getting Started
+This Project contains python code and ansible roles to setup simple web application which shows the ssh attempt on the client machines.
+This setup is explained in below steps:-
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+1. Alpha Client - It is a Python script [alphaclient.py](https://github.com/anup1384/alpha-ssh/blob/master/roles/alpha-client/templates/alphaclient.py) which runs on client machines as a systemd service. Script fetches the SSH attempts on machines and sends to Alpha Server on port 8080. Script logs are logged at /var/log/alpha-client/alphaclient.log.
 
-### Prerequisites
+2. Alpha Server - On Server I have used a socket connection which uses port 8080 on machine and gets the data from client machines and store it in db using script [alphaserver.py](https://github.com/anup1384/alpha-ssh/blob/master/roles/alpha-server/templates/alphaserver.py) which runs as systemd service and log the action logs at /var/log/alpha-server/alphaserver.log. Also, scripts creates a db and table if it doesn't exists.
+
+3. Database Server - To store the data of SSH attempt count made on client machines. Database is runing on same server where alphaserver.py is running i.e Alpha Server Machine.
+
+4. App Server - Read data from DB and visualizes the SSH attempt count on browser using script [app.py](https://github.com/anup1384/alpha-ssh/blob/master/roles/alpha-server/templates/app.py) which runs on port 8090 on machine as a systemd service and logs are logged at /var/log/alpha-server/applogs.log
+
+5. Nginx - It is used as a proxy for app.py.
+
+## Getting Started:-
+
+Clone the repository and Execute the below mentioned steps.
+
+Ansible cases valid only for Ubuntu 18.04.3 LTS.
+
+### Prerequisites:-
 
 ```
-Ansible 2.7.5
-python3
-mysql
-nginx
+Ubuntu 18 machine with below packages installed
+* Ansible 2.7.5
+* python3
 ```
 
-### Installing
+## How To Use:-
 
-Initalize and configure the ansible role to setup entire application.
+Ansible execution - An Ansible inventory file named hosts which have the IP/hostname, User, Private Key of the client and server.I have updated the default static inventory in ansible.cfg conf. Different inventory can be used with -i option which will override the default inventory. 
+
+Execute below steps for Server end configuration. Mysql will be installed in the Ansible role of Alpha Server as the application is dependent on DB. Ansible Vault is used for encryption of mysql password.
+
 ```
-ansible-galaxy init alpha-client --init-path=./roles --offline
-
+ansible-vault encrypt_string --vault-id ./ansible_vault  'Paste your mysql password here' --name 'mysql_root_password’
 ```
-Ansible cases valid only for ubuntu-18.04.
-
-Python - at client end, to send the report of ssh attempt to server.
-
-## How To Use
-
-Ansible execution - We can pass inventory with -i option or can configure inventory file. We can limit the execution with -l
-To configure server end configuration:
+Update all required varibales in group_vars for alpha-server configuration at [group_vars/tag_service_alpha_server](https://github.com/anup1384/alpha-ssh/blob/master/group_vars/tag_service_alpha_server)
 
 ```
 ansible-playbook alpha-server.yml  -e "target_host=tag_service_alpha_server" --vault-id ./ansible_vault   -vv
 ```
 
-To configure client end configuration.
+Execute below steps to configure Alpha Client.
+
+Update all the required varibales in group_vars for alpha-client configuration at [group_vars/tag_service_alpha_client](https://github.com/anup1384/alpha-ssh/blob/master/group_vars/tag_service_alpha_client)
 
 ```
 ansible-playbook alpha-client.yml -e "target_host=tag_service_alpha_client"  -vv
 ```
 
 
-## Testing
+## Testing:-
 
-To test the working of the app, you need to attempt ssh login to clients.
+To test the app, you need to attempt ssh login to client machines.
 
 ```
 ssh username@client_ip
 ```
 
-To view ssh attempt report, hit the IP of the Server.
+To view ssh attempt report, hit the IP of the Alpha Server.
+
+![alphaserver-app](https://github.com/anup1384/alpha-ssh/blob/master/alphaserver.png)
+
 
 ## Authors
 
